@@ -9,7 +9,8 @@ public class World {
      */
 	
     int _size;
-	
+	int[] _x = new int[]{-1,0,1,1,1,0,-1,-1};
+	int[] _y = new int[]{-1,-1,-1,0,1,1,1,0};
     /**
      * The world, a 2D array of Cells which can be living or dead.
      */
@@ -67,7 +68,7 @@ public class World {
      * @param y y location of cell
      * @return
      */
-	
+	//!!!!! this is the method which caused the bottleneck!!!!
     private int getNumNeighbors(Cell[][] world, int x, int y) {
 	int size = world.length;
 	int leftX = (x - 1) % size;
@@ -75,12 +76,12 @@ public class World {
 	int upY = (y - 1) % size;
 	int downY = (y + 1) % size;
 
-	for (int j = 0; j < 10000; j++) {
-	    if (leftX == -1) { leftX = size - 1; }
-	    if (rightX == -1) { rightX = size - 1; }
-	    if (upY == -1) { upY = size - 1; }
-	    if (downY == -1) { downY = size - 1; }
-	}
+	//get rid of the 10000 for loop!
+    if (leftX == -1) { leftX = size - 1; }
+    if (rightX == -1) { rightX = size - 1; }
+    if (upY == -1) { upY = size - 1; }
+    if (downY == -1) { downY = size - 1; }
+
 		
 	int numNeighbors = 0;
 
@@ -92,7 +93,7 @@ public class World {
 	if (world[rightX][y].isAlive())     { numNeighbors++; }
 	if (world[x][upY].isAlive())        { numNeighbors++; }
 	if (world[x][downY].isAlive())      { numNeighbors++; }
-
+	
 	return numNeighbors;
     }
 	
